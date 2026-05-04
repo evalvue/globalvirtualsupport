@@ -1,8 +1,36 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, Component, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import GlobeFallback from "@/components/GlobeFallback";
 
 const Globe3D = lazy(() => import("@/components/Globe3D"));
+
+function hasWebGL(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext("webgl2") || canvas.getContext("webgl"))
+    );
+  } catch {
+    return false;
+  }
+}
+
+class GlobeErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error: Error) {
+    console.warn("Globe3D failed, using fallback:", error.message);
+  }
+  render() {
+    if (this.state.hasError) return <GlobeFallback />;
+    return this.props.children;
+  }
+}
 
 const Hero = () => {
   return (
@@ -49,9 +77,15 @@ const Hero = () => {
         </div>
 
         <div className="relative h-[420px] sm:h-[520px] lg:h-[600px] animate-fade-in">
-          <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-muted-foreground">Loading globe…</div>}>
-            <Globe3D />
-          </Suspense>
+          {hasWebGL() ? (
+            <GlobeErrorBoundary>
+              <Suspense fallback={<GlobeFallback />}>
+                <Globe3D />
+              </Suspense>
+            </GlobeErrorBoundary>
+          ) : (
+            <GlobeFallback />
+          )}
         </div>
       </div>
     </section>
