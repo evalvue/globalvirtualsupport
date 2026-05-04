@@ -1,12 +1,42 @@
-import { Headphones, Truck, PhoneCall, Code2, ClipboardList, Building2 } from "lucide-react";
+import { Headphones, Truck, PhoneCall, Code2, ClipboardList, Building2, Check } from "lucide-react";
 
 const services = [
-  { icon: PhoneCall, title: "Call Center & BPO", desc: "Inbound, outbound and back-office operations handled by trained agents who feel like part of your team." },
-  { icon: Truck, title: "Dispatching Services", desc: "24/7 truck dispatch, load booking, rate negotiation and route optimization for carriers." },
-  { icon: Building2, title: "Logistics Support", desc: "End-to-end coordination — billing, paperwork, broker communication and freight tracking." },
-  { icon: Headphones, title: "Virtual Assistants", desc: "Dedicated VAs for admin, scheduling, CRM, lead generation and customer follow-ups." },
-  { icon: Code2, title: "Web Development", desc: "Modern websites, e-commerce stores and custom web apps built with the latest stack." },
-  { icon: ClipboardList, title: "Data & Operations", desc: "Data entry, document processing and process automation that keeps your back office humming." },
+  {
+    icon: PhoneCall,
+    title: "Call Center & BPO",
+    desc: "Inbound, outbound and back-office operations handled by trained agents who feel like part of your in-house team.",
+    features: ["Inbound customer support", "Outbound sales & cold calling", "Live chat & email support", "Order processing & QA"],
+  },
+  {
+    icon: Truck,
+    title: "Dispatching Services",
+    desc: "24/7 truck dispatch, load booking, rate negotiation and route optimization for carriers and owner-operators.",
+    features: ["Load booking on top boards", "Rate negotiation with brokers", "Route & fuel optimization", "Driver coordination 24/7"],
+  },
+  {
+    icon: Building2,
+    title: "Logistics Support",
+    desc: "End-to-end freight coordination — billing, paperwork, broker communication and real-time tracking.",
+    features: ["BOL & POD management", "Invoicing & factoring support", "Broker / shipper follow-up", "Live freight tracking"],
+  },
+  {
+    icon: Headphones,
+    title: "Virtual Assistants",
+    desc: "Dedicated VAs for admin, scheduling, CRM, lead generation and customer follow-ups — all in your timezone.",
+    features: ["Calendar & inbox management", "CRM updates & data entry", "Lead generation & research", "Customer follow-ups"],
+  },
+  {
+    icon: Code2,
+    title: "Web Development",
+    desc: "Modern websites, e-commerce stores and custom web apps built with React, Next.js, Shopify and WordPress.",
+    features: ["Business & SaaS websites", "E-commerce (Shopify / WooCommerce)", "Custom web & mobile apps", "SEO & performance tuning"],
+  },
+  {
+    icon: ClipboardList,
+    title: "Data & Operations",
+    desc: "Data entry, document processing and back-office automation that keeps your operations humming.",
+    features: ["Data entry & cleanup", "Document & PDF processing", "Workflow automation", "Reporting & dashboards"],
+  },
 ];
 
 const Services = () => {
@@ -32,7 +62,15 @@ const Services = () => {
                   <s.icon className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{s.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-5">{s.desc}</p>
+                <ul className="space-y-2 pt-4 border-t border-border">
+                  {s.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-foreground/85">
+                      <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </article>
           ))}

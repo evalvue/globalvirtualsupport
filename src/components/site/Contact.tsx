@@ -28,7 +28,7 @@ const Contact = () => {
             </li>
             <li className="flex items-center gap-4">
               <span className="w-11 h-11 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center"><Phone className="w-5 h-5 text-primary" /></span>
-              <div><div className="text-xs text-muted-foreground">Phone</div><a href="tel:+10000000000" className="font-medium hover:text-primary">+1 (000) 000-0000</a></div>
+              <div><div className="text-xs text-muted-foreground">Phone — 24/7</div><a href="tel:+14043820137" className="font-medium hover:text-primary">+1 (404) 382-0137</a></div>
             </li>
             <li className="flex items-center gap-4">
               <span className="w-11 h-11 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center"><MapPin className="w-5 h-5 text-primary" /></span>
