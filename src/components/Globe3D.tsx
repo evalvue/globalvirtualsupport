@@ -3,20 +3,21 @@ import { Float, OrbitControls, Sphere, useTexture } from "@react-three/drei";
 import { useMemo, useRef, Suspense } from "react";
 import * as THREE from "three";
 
-const EARTH_DAY = "https://unpkg.com/three-globe@2.31.1/example/img/earth-blue-marble.jpg";
-const EARTH_BUMP = "https://unpkg.com/three-globe@2.31.1/example/img/earth-topology.png";
-const EARTH_SPEC = "https://unpkg.com/three-globe@2.31.1/example/img/earth-water.png";
-const CLOUDS = "https://unpkg.com/three-globe@2.31.1/example/img/clouds.png";
+const EARTH_DAY = "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg";
+const EARTH_NORMAL = "https://threejs.org/examples/textures/planets/earth_normal_2048.jpg";
+const EARTH_SPEC = "https://threejs.org/examples/textures/planets/earth_specular_2048.jpg";
+const CLOUDS = "https://threejs.org/examples/textures/planets/earth_clouds_1024.png";
 
 function Earth() {
   const ref = useRef<THREE.Group>(null);
   const cloudRef = useRef<THREE.Mesh>(null);
-  const [dayMap, bumpMap, specMap, cloudMap] = useTexture([
+  const [dayMap, normalMap, specMap, cloudMap] = useTexture([
     EARTH_DAY,
-    EARTH_BUMP,
+    EARTH_NORMAL,
     EARTH_SPEC,
     CLOUDS,
   ]);
+  dayMap.anisotropy = 8;
 
   useFrame((_, delta) => {
     if (ref.current) ref.current.rotation.y += delta * 0.08;
@@ -60,11 +61,10 @@ function Earth() {
       <Sphere args={[2, 64, 64]}>
         <meshPhongMaterial
           map={dayMap}
-          bumpMap={bumpMap}
-          bumpScale={0.05}
+          normalMap={normalMap}
           specularMap={specMap}
-          specular={new THREE.Color("#1a3a5a")}
-          shininess={12}
+          specular={new THREE.Color("#2a5a8a")}
+          shininess={18}
         />
       </Sphere>
       {/* Clouds layer */}
