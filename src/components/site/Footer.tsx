@@ -1,6 +1,9 @@
-import { Globe, Phone, Mail } from "lucide-react";
+import { Globe, Phone, Mail, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useSiteSettings, telHref } from "@/hooks/useSiteSettings";
 
 const Footer = () => {
+  const { settings } = useSiteSettings();
   return (
     <footer className="border-t border-border py-12 px-6 mt-12">
       <div className="container mx-auto grid md:grid-cols-4 gap-8 text-sm">
@@ -16,18 +19,20 @@ const Footer = () => {
         <div>
           <h4 className="font-semibold mb-3">Quick Links</h4>
           <ul className="space-y-2 text-muted-foreground">
-            <li><a href="#services" className="hover:text-primary">Services</a></li>
-            <li><a href="#benefits" className="hover:text-primary">Benefits</a></li>
-            <li><a href="#global" className="hover:text-primary">Global Presence</a></li>
-            <li><a href="#how-to-connect" className="hover:text-primary">How to Connect</a></li>
-            <li><a href="#contact" className="hover:text-primary">Contact</a></li>
+            <li><Link to="/services" className="hover:text-primary">Services</Link></li>
+            <li><Link to="/industries" className="hover:text-primary">Industries</Link></li>
+            <li><Link to="/about" className="hover:text-primary">About</Link></li>
+            <li><Link to="/global-presence" className="hover:text-primary">Global Presence</Link></li>
+            <li><Link to="/how-to-connect" className="hover:text-primary">How to Connect</Link></li>
+            <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="font-semibold mb-3">Contact</h4>
           <ul className="space-y-2 text-muted-foreground">
-            <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /><a href="tel:+14043820137" className="hover:text-primary">+1 (404) 382-0137</a></li>
-            <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /><a href="mailto:info@globalvirtualsupport.com" className="hover:text-primary">info@globalvirtualsupport.com</a></li>
+            <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /><a href={telHref(settings.phone)} className="hover:text-primary">{settings.phone}</a></li>
+            <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /><a href={`mailto:${settings.email}`} className="hover:text-primary">{settings.email}</a></li>
+            <li className="flex items-start gap-2"><MapPin className="w-4 h-4 text-primary mt-0.5" /><span>{settings.address}</span></li>
           </ul>
         </div>
       </div>
