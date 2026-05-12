@@ -6,9 +6,14 @@ import {
   CalendarCheck,
   Briefcase,
   ClipboardCheck,
-  DollarSign,
+  IndianRupee,
   LogOut,
   Globe,
+  PalmtreeIcon,
+  CalendarDays,
+  Megaphone,
+  FileText,
+  Building2,
 } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useEffect } from "react";
@@ -16,12 +21,17 @@ import { Button } from "@/components/ui/button";
 
 const items = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
-  { to: "/admin/site-settings", label: "Site Settings", icon: Settings },
   { to: "/admin/candidates", label: "Candidates", icon: Users },
   { to: "/admin/interviews", label: "Interviews", icon: CalendarCheck },
   { to: "/admin/employees", label: "Employees", icon: Briefcase },
+  { to: "/admin/departments", label: "Departments", icon: Building2 },
   { to: "/admin/attendance", label: "Attendance", icon: ClipboardCheck },
-  { to: "/admin/salary", label: "Salary", icon: DollarSign },
+  { to: "/admin/leaves", label: "Leaves", icon: PalmtreeIcon },
+  { to: "/admin/holidays", label: "Holidays", icon: CalendarDays },
+  { to: "/admin/salary", label: "Salary", icon: IndianRupee },
+  { to: "/admin/documents", label: "Documents", icon: FileText },
+  { to: "/admin/announcements", label: "Announcements", icon: Megaphone },
+  { to: "/admin/site-settings", label: "Site Settings", icon: Settings },
 ];
 
 const AdminLayout = () => {

@@ -20,6 +20,11 @@ import AdminInterviews from "./pages/admin/Interviews";
 import AdminEmployees from "./pages/admin/Employees";
 import AdminAttendance from "./pages/admin/Attendance";
 import AdminSalary from "./pages/admin/Salary";
+import AdminLeaves from "./pages/admin/Leaves";
+import AdminHolidays from "./pages/admin/Holidays";
+import AdminAnnouncements from "./pages/admin/Announcements";
+import AdminDepartments from "./pages/admin/Departments";
+import AdminDocuments from "./pages/admin/Documents";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +52,11 @@ const App = () => (
             <Route path="employees" element={<AdminEmployees />} />
             <Route path="attendance" element={<AdminAttendance />} />
             <Route path="salary" element={<AdminSalary />} />
+            <Route path="leaves" element={<AdminLeaves />} />
+            <Route path="holidays" element={<AdminHolidays />} />
+            <Route path="announcements" element={<AdminAnnouncements />} />
+            <Route path="departments" element={<AdminDepartments />} />
+            <Route path="documents" element={<AdminDocuments />} />
           </Route>
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
