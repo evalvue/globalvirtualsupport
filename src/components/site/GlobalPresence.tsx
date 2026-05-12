@@ -1,4 +1,5 @@
 import { MapPin, Phone } from "lucide-react";
+import { useSiteSettings, telHref } from "@/hooks/useSiteSettings";
 
 const locations = [
   { city: "New York, USA", x: 26, y: 38, primary: true },
@@ -12,6 +13,7 @@ const locations = [
 ];
 
 const GlobalPresence = () => {
+  const { settings } = useSiteSettings();
   return (
     <section id="global" className="relative py-24 px-6">
       <div className="container mx-auto">
@@ -24,11 +26,11 @@ const GlobalPresence = () => {
             Headquartered in the USA with a delivery network spanning 4 continents — always one call away.
           </p>
           <a
-            href="tel:+14043820137"
+            href={telHref(settings.phone)}
             className="inline-flex items-center gap-2 mt-6 glass rounded-full px-5 py-2.5 text-sm font-medium hover:border-primary/60 transition-colors"
           >
             <Phone className="w-4 h-4 text-primary" />
-            <span className="text-foreground">+1 (404) 382-0137</span>
+            <span className="text-foreground">{settings.phone}</span>
             <span className="text-muted-foreground">— 24/7 Support</span>
           </a>
         </div>

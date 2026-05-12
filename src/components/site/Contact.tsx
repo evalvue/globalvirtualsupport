@@ -5,8 +5,10 @@ import { Label } from "@/components/ui/label";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { toast } from "sonner";
 import { FormEvent } from "react";
+import { useSiteSettings, telHref } from "@/hooks/useSiteSettings";
 
 const Contact = () => {
+  const { settings } = useSiteSettings();
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     toast.success("Thanks! We'll get back to you within 1 business day.");
@@ -24,15 +26,15 @@ const Contact = () => {
           <ul className="space-y-5">
             <li className="flex items-center gap-4">
               <span className="w-11 h-11 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center"><Mail className="w-5 h-5 text-primary" /></span>
-              <div><div className="text-xs text-muted-foreground">Email</div><a href="mailto:info@globalvirtualsupport.com" className="font-medium hover:text-primary">info@globalvirtualsupport.com</a></div>
+              <div><div className="text-xs text-muted-foreground">Email</div><a href={`mailto:${settings.email}`} className="font-medium hover:text-primary">{settings.email}</a></div>
             </li>
             <li className="flex items-center gap-4">
               <span className="w-11 h-11 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center"><Phone className="w-5 h-5 text-primary" /></span>
-              <div><div className="text-xs text-muted-foreground">Phone — 24/7</div><a href="tel:+14043820137" className="font-medium hover:text-primary">+1 (404) 382-0137</a></div>
+              <div><div className="text-xs text-muted-foreground">Phone — 24/7</div><a href={telHref(settings.phone)} className="font-medium hover:text-primary">{settings.phone}</a></div>
             </li>
             <li className="flex items-center gap-4">
               <span className="w-11 h-11 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center"><MapPin className="w-5 h-5 text-primary" /></span>
-              <div><div className="text-xs text-muted-foreground">Headquartered</div><div className="font-medium">United States</div></div>
+              <div><div className="text-xs text-muted-foreground">Address</div><div className="font-medium">{settings.address}</div></div>
             </li>
           </ul>
         </div>
