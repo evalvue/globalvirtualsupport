@@ -37,7 +37,10 @@ const Footer = () => {
         </div>
       </div>
       <div className="container mx-auto mt-10 pt-6 border-t border-border text-xs text-muted-foreground text-center">
-        © {new Date().getFullYear()} GlobalVirtualSupport.com — All rights reserved.
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
+          <span>© {new Date().getFullYear()} GlobalVirtualSupport.com — All rights reserved.</span>
+          <Link to="/admin/login" className="hover:text-primary transition-colors">Admin Login</Link>
+        </div>
       </div>
     </footer>
   );
