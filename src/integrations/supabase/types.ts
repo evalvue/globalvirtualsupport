@@ -14,16 +14,286 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      attendance: {
+        Row: {
+          created_at: string
+          date: string
+          employee_id: string
+          id: string
+          notes: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          employee_id: string
+          id?: string
+          notes?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          employee_id?: string
+          id?: string
+          notes?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      candidates: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          joining_date: string | null
+          mobile: string
+          name: string
+          notes: string | null
+          position: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          joining_date?: string | null
+          mobile: string
+          name: string
+          notes?: string | null
+          position?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          joining_date?: string | null
+          mobile?: string
+          name?: string
+          notes?: string | null
+          position?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      employees: {
+        Row: {
+          active: boolean
+          base_salary: number
+          created_at: string
+          department: string | null
+          email: string | null
+          id: string
+          joining_date: string | null
+          mobile: string
+          name: string
+          role: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          base_salary?: number
+          created_at?: string
+          department?: string | null
+          email?: string | null
+          id?: string
+          joining_date?: string | null
+          mobile: string
+          name: string
+          role?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          base_salary?: number
+          created_at?: string
+          department?: string | null
+          email?: string | null
+          id?: string
+          joining_date?: string | null
+          mobile?: string
+          name?: string
+          role?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      interviews: {
+        Row: {
+          candidate_id: string | null
+          candidate_name: string
+          created_at: string
+          id: string
+          interviewer: string | null
+          mode: string | null
+          notes: string | null
+          result: string
+          scheduled_at: string
+          updated_at: string
+        }
+        Insert: {
+          candidate_id?: string | null
+          candidate_name: string
+          created_at?: string
+          id?: string
+          interviewer?: string | null
+          mode?: string | null
+          notes?: string | null
+          result?: string
+          scheduled_at: string
+          updated_at?: string
+        }
+        Update: {
+          candidate_id?: string | null
+          candidate_name?: string
+          created_at?: string
+          id?: string
+          interviewer?: string | null
+          mode?: string | null
+          notes?: string | null
+          result?: string
+          scheduled_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interviews_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salaries: {
+        Row: {
+          base: number
+          bonus: number
+          created_at: string
+          deduction: number
+          employee_id: string
+          id: string
+          month: string
+          net: number
+          notes: string | null
+          paid: boolean
+          paid_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          base?: number
+          bonus?: number
+          created_at?: string
+          deduction?: number
+          employee_id: string
+          id?: string
+          month: string
+          net?: number
+          notes?: string | null
+          paid?: boolean
+          paid_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          base?: number
+          bonus?: number
+          created_at?: string
+          deduction?: number
+          employee_id?: string
+          id?: string
+          month?: string
+          net?: number
+          notes?: string | null
+          paid?: boolean
+          paid_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salaries_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_settings: {
+        Row: {
+          address: string
+          email: string
+          id: string
+          phone: string
+          updated_at: string
+          whatsapp: string | null
+        }
+        Insert: {
+          address?: string
+          email?: string
+          id?: string
+          phone?: string
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Update: {
+          address?: string
+          email?: string
+          id?: string
+          phone?: string
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin_email: { Args: { _email: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +420,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin"],
+    },
   },
 } as const
