@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, Pencil, Check } from "lucide-react";
 import { toast } from "sonner";
 import CrudTable from "@/components/admin/CrudTable";
+import { inr } from "@/lib/currency";
 
 type Employee = { id: string; name: string; base_salary: number };
 type Salary = {
@@ -107,7 +108,7 @@ const Salary = () => {
                 <div><Label>Deduction</Label><Input type="number" value={form.deduction} onChange={(e) => setForm({ ...form, deduction: Number(e.target.value) })} /></div>
               </div>
               <div className="text-sm text-muted-foreground">
-                Net: <span className="text-foreground font-bold text-lg">${(Number(form.base) + Number(form.bonus) - Number(form.deduction)).toLocaleString()}</span>
+                Net: <span className="text-foreground font-bold text-lg">{inr(Number(form.base) + Number(form.bonus) - Number(form.deduction))}</span>
               </div>
               <Button onClick={save} className="w-full bg-gradient-primary text-primary-foreground border-0">Save</Button>
             </div>
@@ -120,10 +121,10 @@ const Salary = () => {
         columns={[
           { header: "Employee", render: (r) => <span className="font-medium">{r.employee_name}</span> },
           { header: "Month", render: (r) => r.month.slice(0, 7) },
-          { header: "Base", render: (r) => `$${Number(r.base).toLocaleString()}` },
-          { header: "Bonus", render: (r) => `$${Number(r.bonus).toLocaleString()}` },
-          { header: "Deduction", render: (r) => `$${Number(r.deduction).toLocaleString()}` },
-          { header: "Net", render: (r) => <span className="font-bold text-gradient">${Number(r.net).toLocaleString()}</span> },
+          { header: "Base", render: (r) => inr(r.base) },
+          { header: "Bonus", render: (r) => inr(r.bonus) },
+          { header: "Deduction", render: (r) => inr(r.deduction) },
+          { header: "Net", render: (r) => <span className="font-bold text-gradient">{inr(r.net)}</span> },
           { header: "Status", render: (r) => r.paid
             ? <span className="px-2 py-0.5 rounded-full text-xs border border-primary/40 text-primary bg-primary/10">Paid</span>
             : <span className="px-2 py-0.5 rounded-full text-xs border border-border text-muted-foreground">Unpaid</span> },

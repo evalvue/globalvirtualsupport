@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import CrudTable from "@/components/admin/CrudTable";
+import { inr } from "@/lib/currency";
 
 type Employee = {
   id: string;
@@ -102,7 +103,7 @@ const Employees = () => {
           { header: "Mobile", render: (r) => r.mobile },
           { header: "Department", render: (r) => r.department || "—" },
           { header: "Role", render: (r) => r.role || "—" },
-          { header: "Salary", render: (r) => `$${Number(r.base_salary).toLocaleString()}` },
+          { header: "Salary", render: (r) => inr(r.base_salary) },
           { header: "Joined", render: (r) => r.joining_date || "—" },
           { header: "", className: "w-24 text-right", render: (r) => (
             <div className="flex gap-1 justify-end">

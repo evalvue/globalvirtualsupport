@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, CalendarCheck, Briefcase, DollarSign } from "lucide-react";
+import { Users, CalendarCheck, Briefcase, IndianRupee } from "lucide-react";
+import { inr } from "@/lib/currency";
 
 const Dashboard = () => {
   const [stats, setStats] = useState({ candidates: 0, employees: 0, todayInterviews: 0, monthlyPayroll: 0 });
@@ -23,7 +24,7 @@ const Dashboard = () => {
     { label: "Total Candidates", value: stats.candidates, icon: Users },
     { label: "Active Employees", value: stats.employees, icon: Briefcase },
     { label: "Today's Interviews", value: stats.todayInterviews, icon: CalendarCheck },
-    { label: "Monthly Payroll", value: `$${stats.monthlyPayroll.toLocaleString()}`, icon: DollarSign },
+    { label: "Monthly Payroll", value: inr(stats.monthlyPayroll), icon: IndianRupee },
   ];
 
   return (
