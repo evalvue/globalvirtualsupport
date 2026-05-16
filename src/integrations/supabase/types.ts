@@ -281,6 +281,54 @@ export type Database = {
           },
         ]
       }
+      leads: {
+        Row: {
+          budget: string | null
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          project_type: string | null
+          service_category: string | null
+          source_page: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          budget?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          project_type?: string | null
+          service_category?: string | null
+          source_page?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          budget?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          project_type?: string | null
+          service_category?: string | null
+          source_page?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       leaves: {
         Row: {
           created_at: string
