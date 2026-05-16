@@ -53,8 +53,15 @@ const LeadForm = ({ defaultCategory, sourcePage, compact }: LeadFormProps) => {
     }
     setLoading(true);
     const { error } = await supabase.from("leads").insert({
-      ...parsed.data,
-      source_page: sourcePage ?? (typeof window !== "undefined" ? window.location.pathname : null),
+      name: parsed.data.name,
+      email: parsed.data.email,
+      phone: parsed.data.phone,
+      company: parsed.data.company,
+      service_category: parsed.data.service_category,
+      project_type: parsed.data.project_type,
+      budget: parsed.data.budget,
+      message: parsed.data.message,
+      source_page: sourcePage ?? (typeof window !== "undefined" ? window.location.pathname : ""),
     });
     setLoading(false);
     if (error) {
