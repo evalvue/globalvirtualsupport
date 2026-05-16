@@ -11,6 +11,8 @@ import IndustriesPage from "./pages/IndustriesPage";
 import GlobalPage from "./pages/GlobalPage";
 import HowToConnectPage from "./pages/HowToConnectPage";
 import ContactPage from "./pages/ContactPage";
+import SoftwareDevelopmentPage from "./pages/SoftwareDevelopmentPage";
+import SoftwareCategoryPage from "./pages/SoftwareCategoryPage";
 import AdminLayout from "./components/admin/AdminLayout";
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -25,6 +27,7 @@ import AdminHolidays from "./pages/admin/Holidays";
 import AdminAnnouncements from "./pages/admin/Announcements";
 import AdminDepartments from "./pages/admin/Departments";
 import AdminDocuments from "./pages/admin/Documents";
+import AdminLeads from "./pages/admin/Leads";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +45,8 @@ const App = () => (
           <Route path="/global-presence" element={<GlobalPage />} />
           <Route path="/how-to-connect" element={<HowToConnectPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/software-development" element={<SoftwareDevelopmentPage />} />
+          <Route path="/software-development/:slug" element={<SoftwareCategoryPage />} />
 
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminLayout />}>
@@ -57,6 +62,7 @@ const App = () => (
             <Route path="announcements" element={<AdminAnnouncements />} />
             <Route path="departments" element={<AdminDepartments />} />
             <Route path="documents" element={<AdminDocuments />} />
+            <Route path="leads" element={<AdminLeads />} />
           </Route>
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
