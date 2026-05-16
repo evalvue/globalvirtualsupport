@@ -5,6 +5,7 @@ import { useSiteSettings, telHref } from "@/hooks/useSiteSettings";
 
 const links = [
   { to: "/services", label: "Services" },
+  { to: "/software-development", label: "Software" },
   { to: "/industries", label: "Industries" },
   { to: "/about", label: "About" },
   { to: "/global-presence", label: "Global" },
