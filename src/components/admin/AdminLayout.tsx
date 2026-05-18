@@ -14,6 +14,8 @@ import {
   Megaphone,
   FileText,
   Building2,
+  Trophy,
+  Inbox,
 } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useEffect } from "react";
@@ -29,6 +31,8 @@ const items = [
   { to: "/admin/leaves", label: "Leaves", icon: PalmtreeIcon },
   { to: "/admin/holidays", label: "Holidays", icon: CalendarDays },
   { to: "/admin/salary", label: "Salary", icon: IndianRupee },
+  { to: "/admin/achievements", label: "Achievers", icon: Trophy },
+  { to: "/admin/leads", label: "Leads", icon: Inbox },
   { to: "/admin/documents", label: "Documents", icon: FileText },
   { to: "/admin/announcements", label: "Announcements", icon: Megaphone },
   { to: "/admin/site-settings", label: "Site Settings", icon: Settings },
