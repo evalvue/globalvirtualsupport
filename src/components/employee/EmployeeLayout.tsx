@@ -1,61 +1,45 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
-  Settings,
-  Users,
   CalendarCheck,
-  Briefcase,
-  ClipboardCheck,
-  IndianRupee,
-  LogOut,
-  Globe,
   PalmtreeIcon,
-  CalendarDays,
-  Megaphone,
-  FileText,
-  Building2,
-  Trophy,
-  Inbox,
+  ClipboardList,
+  UserCircle,
+  Users,
+  LogOut,
+  Briefcase,
 } from "lucide-react";
-import { useAdminAuth } from "@/hooks/useAdminAuth";
+import { useEmployeeAuth } from "@/hooks/useEmployeeAuth";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 const items = [
-  { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
-  { to: "/admin/candidates", label: "Candidates", icon: Users },
-  { to: "/admin/interviews", label: "Interviews", icon: CalendarCheck },
-  { to: "/admin/employees", label: "Employees", icon: Briefcase },
-  { to: "/admin/departments", label: "Departments", icon: Building2 },
-  { to: "/admin/attendance", label: "Attendance", icon: ClipboardCheck },
-  { to: "/admin/leaves", label: "Leaves", icon: PalmtreeIcon },
-  { to: "/admin/holidays", label: "Holidays", icon: CalendarDays },
-  { to: "/admin/salary", label: "Salary", icon: IndianRupee },
-  { to: "/admin/achievements", label: "Achievers", icon: Trophy },
-  { to: "/admin/leads", label: "Leads", icon: Inbox },
-  { to: "/admin/documents", label: "Documents", icon: FileText },
-  { to: "/admin/announcements", label: "Announcements", icon: Megaphone },
-  { to: "/admin/site-settings", label: "Site Settings", icon: Settings },
+  { to: "/employee", label: "Dashboard", icon: LayoutDashboard, end: true },
+  { to: "/employee/attendance", label: "Attendance", icon: CalendarCheck },
+  { to: "/employee/leave", label: "Leave", icon: PalmtreeIcon },
+  { to: "/employee/tasks", label: "Tasks & Customers", icon: ClipboardList },
+  { to: "/employee/team", label: "Team & Achievers", icon: Users },
+  { to: "/employee/profile", label: "My Profile", icon: UserCircle },
 ];
 
-const AdminLayout = () => {
-  const { user, isAdmin, loading, signOut } = useAdminAuth();
+const EmployeeLayout = () => {
+  const { user, isEmployee, employee, loading, signOut } = useEmployeeAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) navigate("/admin/login", { replace: true });
+    if (!loading && !user) navigate("/employee/login", { replace: true });
   }, [loading, user, navigate]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Loading...</div>;
+  if (loading)
+    return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Loading...</div>;
   if (!user) return null;
-  if (!isAdmin) {
+  if (!isEmployee || !employee) {
     return (
       <div className="min-h-screen flex items-center justify-center px-6">
         <div className="glass rounded-2xl p-8 max-w-md text-center">
           <h2 className="text-2xl font-bold mb-2">Access denied</h2>
           <p className="text-muted-foreground mb-6">
-            You are signed in as <span className="text-foreground">{user.email}</span>, but only the authorized admin
-            account can access this panel.
+            Your account ({user.email}) is not linked to any employee profile. Please contact your admin.
           </p>
           <Button onClick={signOut} variant="outline">Sign out</Button>
         </div>
@@ -67,8 +51,8 @@ const AdminLayout = () => {
     <div className="min-h-screen flex bg-background">
       <aside className="w-60 border-r border-border bg-card/40 backdrop-blur-md flex flex-col">
         <div className="p-6 flex items-center gap-2 border-b border-border">
-          <Globe className="w-5 h-5 text-primary" />
-          <span className="font-semibold">Admin Panel</span>
+          <Briefcase className="w-5 h-5 text-primary" />
+          <span className="font-semibold">Employee CRM</span>
         </div>
         <nav className="flex-1 p-3 space-y-1">
           {items.map((it) => (
@@ -90,6 +74,7 @@ const AdminLayout = () => {
           ))}
         </nav>
         <div className="p-3 border-t border-border">
+          <div className="text-xs text-muted-foreground px-3 mb-1 truncate">{employee.name}</div>
           <div className="text-xs text-muted-foreground px-3 mb-2 truncate">{user.email}</div>
           <Button onClick={signOut} variant="ghost" size="sm" className="w-full justify-start">
             <LogOut className="w-4 h-4 mr-2" /> Sign out
@@ -105,4 +90,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default EmployeeLayout;

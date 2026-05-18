@@ -28,6 +28,15 @@ import AdminAnnouncements from "./pages/admin/Announcements";
 import AdminDepartments from "./pages/admin/Departments";
 import AdminDocuments from "./pages/admin/Documents";
 import AdminLeads from "./pages/admin/Leads";
+import AdminAchievements from "./pages/admin/Achievements";
+import EmployeeLayout from "./components/employee/EmployeeLayout";
+import EmployeeLogin from "./pages/employee/Login";
+import EmployeeDashboard from "./pages/employee/Dashboard";
+import EmployeeAttendance from "./pages/employee/Attendance";
+import EmployeeLeave from "./pages/employee/Leave";
+import EmployeeTasks from "./pages/employee/Tasks";
+import EmployeeProfile from "./pages/employee/Profile";
+import EmployeeTeam from "./pages/employee/Team";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +72,17 @@ const App = () => (
             <Route path="departments" element={<AdminDepartments />} />
             <Route path="documents" element={<AdminDocuments />} />
             <Route path="leads" element={<AdminLeads />} />
+            <Route path="achievements" element={<AdminAchievements />} />
+          </Route>
+
+          <Route path="/employee/login" element={<EmployeeLogin />} />
+          <Route path="/employee" element={<EmployeeLayout />}>
+            <Route index element={<EmployeeDashboard />} />
+            <Route path="attendance" element={<EmployeeAttendance />} />
+            <Route path="leave" element={<EmployeeLeave />} />
+            <Route path="tasks" element={<EmployeeTasks />} />
+            <Route path="profile" element={<EmployeeProfile />} />
+            <Route path="team" element={<EmployeeTeam />} />
           </Route>
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

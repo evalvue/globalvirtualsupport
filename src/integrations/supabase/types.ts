@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          created_at: string
+          description: string | null
+          employee_id: string
+          id: string
+          month: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          employee_id: string
+          id?: string
+          month: string
+          title?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          employee_id?: string
+          id?: string
+          month?: string
+          title?: string
+        }
+        Relationships: []
+      }
       announcements: {
         Row: {
           body: string
@@ -170,43 +197,58 @@ export type Database = {
       }
       employees: {
         Row: {
+          about: string | null
           active: boolean
+          avatar_url: string | null
           base_salary: number
           created_at: string
           department: string | null
+          dob: string | null
           email: string | null
           id: string
           joining_date: string | null
           mobile: string
+          monthly_target: number
           name: string
           role: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
+          about?: string | null
           active?: boolean
+          avatar_url?: string | null
           base_salary?: number
           created_at?: string
           department?: string | null
+          dob?: string | null
           email?: string | null
           id?: string
           joining_date?: string | null
           mobile: string
+          monthly_target?: number
           name: string
           role?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
+          about?: string | null
           active?: boolean
+          avatar_url?: string | null
           base_salary?: number
           created_at?: string
           department?: string | null
+          dob?: string | null
           email?: string | null
           id?: string
           joining_date?: string | null
           mobile?: string
+          monthly_target?: number
           name?: string
           role?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -456,6 +498,33 @@ export type Database = {
         }
         Relationships: []
       }
+      time_logs: {
+        Row: {
+          created_at: string
+          employee_id: string
+          event_at: string
+          event_type: string
+          id: string
+          notes: string | null
+        }
+        Insert: {
+          created_at?: string
+          employee_id: string
+          event_at?: string
+          event_type: string
+          id?: string
+          notes?: string | null
+        }
+        Update: {
+          created_at?: string
+          employee_id?: string
+          event_at?: string
+          event_type?: string
+          id?: string
+          notes?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -477,11 +546,45 @@ export type Database = {
         }
         Relationships: []
       }
+      work_logs: {
+        Row: {
+          created_at: string
+          customers_handled: number
+          employee_id: string
+          id: string
+          log_date: string
+          notes: string | null
+          tasks_completed: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customers_handled?: number
+          employee_id: string
+          id?: string
+          log_date?: string
+          notes?: string | null
+          tasks_completed?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customers_handled?: number
+          employee_id?: string
+          id?: string
+          log_date?: string
+          notes?: string | null
+          tasks_completed?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      current_employee_id: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -492,7 +595,7 @@ export type Database = {
       is_admin_email: { Args: { _email: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin"
+      app_role: "admin" | "employee"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -620,7 +723,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin"],
+      app_role: ["admin", "employee"],
     },
   },
 } as const
