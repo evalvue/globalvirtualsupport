@@ -23,7 +23,7 @@ const items = [
 ];
 
 const EmployeeLayout = () => {
-  const { user, isEmployee, employee, loading, signOut } = useEmployeeAuth();
+  const { user, isEmployee, isAdmin, employee, loading, signOut } = useEmployeeAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +33,8 @@ const EmployeeLayout = () => {
   if (loading)
     return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Loading...</div>;
   if (!user) return null;
-  if (!isEmployee || !employee) {
+  const hasAccess = isAdmin || (isEmployee && !!employee);
+  if (!hasAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center px-6">
         <div className="glass rounded-2xl p-8 max-w-md text-center">
@@ -74,8 +75,15 @@ const EmployeeLayout = () => {
           ))}
         </nav>
         <div className="p-3 border-t border-border">
-          <div className="text-xs text-muted-foreground px-3 mb-1 truncate">{employee.name}</div>
+          <div className="text-xs text-muted-foreground px-3 mb-1 truncate">
+            {employee?.name ?? (isAdmin ? "Admin" : "")}
+          </div>
           <div className="text-xs text-muted-foreground px-3 mb-2 truncate">{user.email}</div>
+          {isAdmin && (
+            <Button asChild variant="outline" size="sm" className="w-full justify-start mb-2">
+              <a href="/admin">Go to Admin Panel</a>
+            </Button>
+          )}
           <Button onClick={signOut} variant="ghost" size="sm" className="w-full justify-start">
             <LogOut className="w-4 h-4 mr-2" /> Sign out
           </Button>

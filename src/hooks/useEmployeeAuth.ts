@@ -22,16 +22,17 @@ export function useEmployeeAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [employee, setEmployee] = useState<EmployeeProfile | null>(null);
   const [isEmployee, setIsEmployee] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const loadProfile = async (uid: string) => {
-    const { data: role } = await supabase
+    const { data: roles } = await supabase
       .from("user_roles")
       .select("role")
-      .eq("user_id", uid)
-      .eq("role", "employee")
-      .maybeSingle();
-    setIsEmployee(!!role);
+      .eq("user_id", uid);
+    const roleSet = new Set((roles ?? []).map((r: any) => r.role));
+    setIsEmployee(roleSet.has("employee"));
+    setIsAdmin(roleSet.has("admin"));
     const { data: emp } = await supabase
       .from("employees")
       .select("*")
@@ -48,6 +49,7 @@ export function useEmployeeAuth() {
         setTimeout(() => loadProfile(session.user.id), 0);
       } else {
         setIsEmployee(false);
+        setIsAdmin(false);
         setEmployee(null);
         setLoading(false);
       }
@@ -67,5 +69,5 @@ export function useEmployeeAuth() {
     await supabase.auth.signOut();
   };
 
-  return { user, employee, isEmployee, loading, signOut, refresh };
+  return { user, employee, isEmployee, isAdmin, loading, signOut, refresh };
 }
