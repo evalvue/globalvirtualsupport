@@ -39,7 +39,11 @@ const Footer = () => {
       <div className="container mx-auto mt-10 pt-6 border-t border-border text-xs text-muted-foreground text-center">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>© {new Date().getFullYear()} GlobalVirtualSupport.com — All rights reserved.</span>
-          <Link to="/admin/login" className="hover:text-primary transition-colors">Admin Login</Link>
+          <div className="flex items-center gap-4">
+            <Link to="/employee/login" className="hover:text-primary transition-colors">CRM Login</Link>
+            <span className="opacity-30">|</span>
+            <Link to="/admin/login" className="hover:text-primary transition-colors">Admin Login</Link>
+          </div>
         </div>
       </div>
     </footer>
