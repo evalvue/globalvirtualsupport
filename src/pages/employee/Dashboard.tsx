@@ -11,7 +11,9 @@ const fmtDur = (ms: number) => {
   if (ms < 0) ms = 0;
   const h = Math.floor(ms / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);
-  return `${h}h ${m}m`;
+  const s = Math.floor((ms % 60000) / 1000);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(h)}:${pad(m)}:${pad(s)}`;
 };
 
 const todayISO = () => new Date().toISOString().slice(0, 10);
@@ -75,7 +77,7 @@ const EmployeeDashboard = () => {
   };
 
   useEffect(() => { loadLogs(); loadExtras(); }, [employee?.id]);
-  useEffect(() => { const i = setInterval(() => setTick((t) => t + 1), 30000); return () => clearInterval(i); }, []);
+  useEffect(() => { const i = setInterval(() => setTick((t) => t + 1), 1000); return () => clearInterval(i); }, []);
 
   const { onClock, onBreak, workedMs, breakMs } = useMemo(() => {
     let onClock = false, onBreak = false, workedMs = 0, breakMs = 0;
@@ -144,26 +146,34 @@ const EmployeeDashboard = () => {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {!onClock && (
-          <Button onClick={() => log("clock_in")} className="bg-gradient-primary text-primary-foreground border-0">
-            <LogIn className="w-4 h-4 mr-2" /> Punch in
-          </Button>
-        )}
-        {onClock && !onBreak && (
-          <Button onClick={() => log("break_start")} variant="outline">
-            <Coffee className="w-4 h-4 mr-2" /> Start break
-          </Button>
-        )}
-        {onBreak && (
-          <Button onClick={() => log("break_end")} variant="outline">
-            <Coffee className="w-4 h-4 mr-2" /> End break
-          </Button>
-        )}
-        {onClock && (
-          <Button onClick={() => log("clock_out")} variant="destructive">
-            <LogOut className="w-4 h-4 mr-2" /> Punch out
-          </Button>
-        )}
+        <Button
+          onClick={() => log("clock_in")}
+          disabled={onClock}
+          className="bg-gradient-primary text-primary-foreground border-0"
+        >
+          <LogIn className="w-4 h-4 mr-2" /> Punch in
+        </Button>
+        <Button
+          onClick={() => log("clock_out")}
+          disabled={!onClock || onBreak}
+          variant="destructive"
+        >
+          <LogOut className="w-4 h-4 mr-2" /> Punch out
+        </Button>
+        <Button
+          onClick={() => log("break_start")}
+          disabled={!onClock || onBreak}
+          variant="outline"
+        >
+          <Coffee className="w-4 h-4 mr-2" /> Start break
+        </Button>
+        <Button
+          onClick={() => log("break_end")}
+          disabled={!onBreak}
+          variant="outline"
+        >
+          <Coffee className="w-4 h-4 mr-2" /> End break
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
