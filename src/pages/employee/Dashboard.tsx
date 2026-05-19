@@ -129,7 +129,7 @@ const EmployeeDashboard = () => {
         <div className="glass rounded-xl p-5 border border-border">
           <div className="text-xs text-muted-foreground">Worked today</div>
           <div className="text-3xl font-bold mt-1">{fmtDur(workedMs)}</div>
-          <div className="text-xs text-muted-foreground mt-1">{onClock ? "Currently clocked in" : "Clocked out"}</div>
+          <div className="text-xs text-muted-foreground mt-1">{onClock ? "Currently punched in" : "Punched out"}</div>
         </div>
         <div className="glass rounded-xl p-5 border border-border">
           <div className="text-xs text-muted-foreground">Break today</div>
@@ -146,7 +146,7 @@ const EmployeeDashboard = () => {
       <div className="flex flex-wrap gap-2">
         {!onClock && (
           <Button onClick={() => log("clock_in")} className="bg-gradient-primary text-primary-foreground border-0">
-            <LogIn className="w-4 h-4 mr-2" /> Clock in
+            <LogIn className="w-4 h-4 mr-2" /> Punch in
           </Button>
         )}
         {onClock && !onBreak && (
@@ -161,7 +161,7 @@ const EmployeeDashboard = () => {
         )}
         {onClock && (
           <Button onClick={() => log("clock_out")} variant="destructive">
-            <LogOut className="w-4 h-4 mr-2" /> Clock out
+            <LogOut className="w-4 h-4 mr-2" /> Punch out
           </Button>
         )}
       </div>
