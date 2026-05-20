@@ -12,7 +12,17 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Circle, Trash2, Plus } from "lucide-react";
 
 type Row = { id: string; log_date: string; tasks_completed: number; customers_handled: number; notes: string | null };
-type Task = { id: string; title: string; description: string | null; status: string; priority: string; due_date: string | null; created_at: string };
+type Task = { id: string; title: string; description: string | null; status: string; priority: string; due_date: string | null; created_at: string; category: string };
+
+const CATEGORIES = [
+  { value: "hr", label: "HR", color: "bg-pink-500/15 text-pink-600 border-pink-500/40" },
+  { value: "sales", label: "Sales", color: "bg-emerald-500/15 text-emerald-600 border-emerald-500/40" },
+  { value: "account", label: "Account", color: "bg-amber-500/15 text-amber-600 border-amber-500/40" },
+  { value: "marketing", label: "Marketing", color: "bg-purple-500/15 text-purple-600 border-purple-500/40" },
+  { value: "developer", label: "Developer", color: "bg-blue-500/15 text-blue-600 border-blue-500/40" },
+  { value: "general", label: "General", color: "bg-muted text-muted-foreground border-border" },
+];
+const catColor = (v: string) => CATEGORIES.find((c) => c.value === v)?.color || CATEGORIES[5].color;
 
 const todayISO = () => new Date().toISOString().slice(0, 10);
 
@@ -28,6 +38,8 @@ const EmployeeTasks = () => {
   const [newDesc, setNewDesc] = useState("");
   const [newPriority, setNewPriority] = useState("medium");
   const [newDue, setNewDue] = useState("");
+  const [newCategory, setNewCategory] = useState("general");
+  const [filterCat, setFilterCat] = useState<string>("all");
 
   const load = async () => {
     if (!employee) return;
@@ -55,7 +67,7 @@ const EmployeeTasks = () => {
     if (!employee) return;
     const { data } = await (supabase as any)
       .from("employee_tasks")
-      .select("id,title,description,status,priority,due_date,created_at")
+      .select("id,title,description,status,priority,due_date,created_at,category")
       .eq("employee_id", employee.id)
       .order("created_at", { ascending: false });
     setTaskList((data as Task[]) || []);
@@ -73,10 +85,11 @@ const EmployeeTasks = () => {
       priority: newPriority,
       due_date: newDue || null,
       status: "todo",
+      category: newCategory,
     });
     if (error) return toast.error(error.message);
     toast.success("Task created");
-    setNewTitle(""); setNewDesc(""); setNewDue(""); setNewPriority("medium");
+    setNewTitle(""); setNewDesc(""); setNewDue(""); setNewPriority("medium"); setNewCategory("general");
     loadTasks();
   };
 
@@ -130,8 +143,16 @@ const EmployeeTasks = () => {
           <div className="font-semibold">My Tasks <span className="text-muted-foreground text-sm">({openCount} open)</span></div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-          <div className="md:col-span-4"><Label>Task title</Label><Input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Call client / Fix bug…" /></div>
-          <div className="md:col-span-4"><Label>Description</Label><Input value={newDesc} onChange={(e) => setNewDesc(e.target.value)} placeholder="Optional details" /></div>
+          <div className="md:col-span-3"><Label>Task title</Label><Input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Call client / Fix bug…" /></div>
+          <div className="md:col-span-3"><Label>Description</Label><Input value={newDesc} onChange={(e) => setNewDesc(e.target.value)} placeholder="Optional details" /></div>
+          <div className="md:col-span-2"><Label>Department</Label>
+            <Select value={newCategory} onValueChange={setNewCategory}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {CATEGORIES.map((c) => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
           <div className="md:col-span-2"><Label>Priority</Label>
             <Select value={newPriority} onValueChange={setNewPriority}>
               <SelectTrigger><SelectValue /></SelectTrigger>
@@ -144,12 +165,20 @@ const EmployeeTasks = () => {
           </div>
           <div className="md:col-span-2"><Label>Due date</Label><Input type="date" value={newDue} onChange={(e) => setNewDue(e.target.value)} /></div>
         </div>
-        <Button onClick={addTask} className="bg-gradient-primary text-primary-foreground border-0">
-          <Plus className="w-4 h-4 mr-2" /> Add task
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button onClick={addTask} className="bg-gradient-primary text-primary-foreground border-0">
+            <Plus className="w-4 h-4 mr-2" /> Add task
+          </Button>
+          <div className="ml-auto flex flex-wrap gap-1">
+            <button onClick={() => setFilterCat("all")} className={`text-xs px-2 py-1 rounded-full border ${filterCat === "all" ? "bg-primary/15 text-primary border-primary/40" : "border-border text-muted-foreground"}`}>All</button>
+            {CATEGORIES.map((c) => (
+              <button key={c.value} onClick={() => setFilterCat(c.value)} className={`text-xs px-2 py-1 rounded-full border ${filterCat === c.value ? c.color : "border-border text-muted-foreground"}`}>{c.label}</button>
+            ))}
+          </div>
+        </div>
         <div className="space-y-2">
           {taskList.length === 0 && <div className="text-sm text-muted-foreground">No tasks yet — create your first one above.</div>}
-          {taskList.map((t) => (
+          {taskList.filter((t) => filterCat === "all" || t.category === filterCat).map((t) => (
             <div key={t.id} className="flex items-center gap-3 p-3 rounded-lg border border-border bg-card/40">
               <button onClick={() => toggleTask(t)} className="text-primary hover:scale-110 transition-transform">
                 {t.status === "done" ? <CheckCircle2 className="w-5 h-5" /> : <Circle className="w-5 h-5" />}
@@ -158,6 +187,7 @@ const EmployeeTasks = () => {
                 <div className={`font-medium truncate ${t.status === "done" ? "line-through text-muted-foreground" : ""}`}>{t.title}</div>
                 {t.description && <div className="text-xs text-muted-foreground truncate">{t.description}</div>}
               </div>
+              <span className={`text-xs px-2 py-0.5 rounded-full border capitalize ${catColor(t.category)}`}>{t.category}</span>
               <Badge variant={t.priority === "high" ? "destructive" : t.priority === "low" ? "secondary" : "default"} className="capitalize">{t.priority}</Badge>
               {t.due_date && <span className="text-xs text-muted-foreground hidden md:inline">{t.due_date}</span>}
               <Button size="icon" variant="ghost" onClick={() => deleteTask(t.id)}><Trash2 className="w-4 h-4" /></Button>
