@@ -6,10 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { Upload, Loader2 } from "lucide-react";
 
 const EmployeeProfile = () => {
   const { employee, refresh } = useEmployeeAuth();
   const [form, setForm] = useState({ name: "", mobile: "", email: "", dob: "", avatar_url: "", about: "" });
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (employee) setForm({
@@ -38,12 +40,42 @@ const EmployeeProfile = () => {
 
       <div className="glass rounded-xl p-5 border border-border space-y-4">
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 rounded-full bg-muted overflow-hidden flex items-center justify-center text-2xl font-bold">
+          <div className="w-24 h-24 rounded-full bg-muted overflow-hidden flex items-center justify-center text-3xl font-bold ring-2 ring-primary/30">
             {form.avatar_url ? <img src={form.avatar_url} alt={form.name} className="w-full h-full object-cover" /> : (form.name[0] || "?")}
           </div>
-          <div className="flex-1">
-            <Label>Avatar URL</Label>
-            <Input value={form.avatar_url} onChange={(e) => setForm({ ...form, avatar_url: e.target.value })} placeholder="https://..." />
+          <div className="flex-1 space-y-2">
+            <Label>Profile photo</Label>
+            <div className="flex gap-2">
+              <input
+                id="avatar-file"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file || !employee) return;
+                  setUploading(true);
+                  const { data: sess } = await supabase.auth.getUser();
+                  const uid = sess.user?.id;
+                  if (!uid) { setUploading(false); return toast.error("Not signed in"); }
+                  const ext = file.name.split(".").pop() || "jpg";
+                  const path = `${uid}/avatar-${Date.now()}.${ext}`;
+                  const { error: upErr } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, cacheControl: "3600" });
+                  if (upErr) { setUploading(false); return toast.error(upErr.message); }
+                  const { data: pub } = supabase.storage.from("avatars").getPublicUrl(path);
+                  setForm((f) => ({ ...f, avatar_url: pub.publicUrl }));
+                  await supabase.from("employees").update({ avatar_url: pub.publicUrl }).eq("id", employee.id);
+                  setUploading(false);
+                  toast.success("Photo uploaded");
+                  refresh();
+                }}
+              />
+              <Button type="button" variant="outline" onClick={() => document.getElementById("avatar-file")?.click()} disabled={uploading}>
+                {uploading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Upload className="w-4 h-4 mr-2" />}
+                {uploading ? "Uploading…" : "Upload photo"}
+              </Button>
+            </div>
+            <Input value={form.avatar_url} onChange={(e) => setForm({ ...form, avatar_url: e.target.value })} placeholder="or paste image URL" />
           </div>
         </div>
 

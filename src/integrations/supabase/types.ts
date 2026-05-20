@@ -197,6 +197,7 @@ export type Database = {
       }
       employee_tasks: {
         Row: {
+          category: string
           completed_at: string | null
           created_at: string
           description: string | null
@@ -209,6 +210,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          category?: string
           completed_at?: string | null
           created_at?: string
           description?: string | null
@@ -221,6 +223,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          category?: string
           completed_at?: string | null
           created_at?: string
           description?: string | null
