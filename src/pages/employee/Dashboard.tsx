@@ -105,6 +105,19 @@ const EmployeeDashboard = () => {
     const { error } = await supabase.from("time_logs").insert({ employee_id: employee.id, event_type });
     if (error) return toast.error(error.message);
     toast.success(event_type.replace("_", " "));
+    // auto-mark attendance present on first punch_in of the day
+    if (event_type === "clock_in") {
+      const today = todayISO();
+      const { data: existing } = await supabase
+        .from("attendance")
+        .select("id")
+        .eq("employee_id", employee.id)
+        .eq("date", today)
+        .maybeSingle();
+      if (!existing) {
+        await supabase.from("attendance").insert({ employee_id: employee.id, date: today, status: "present" });
+      }
+    }
     loadLogs();
   };
 
